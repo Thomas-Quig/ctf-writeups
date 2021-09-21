@@ -144,6 +144,18 @@ We started by opening the PCAP and looking at the method.
 
 First thing I wanted to do was get the names of all the objects in this list. I quickly wrote `dumpObjNames()` to do that. To get objnames.json I made sure that 'Object Name' Was in the 'BACAPP' field in a wireshark filter. Filtering looked like this
 ![Image of filtered by objeect name](https://link)
+
+We found 8 "SENSOR_XXXXX" names and 30 or so other random sensors.
+
+Looking around at the packets more, we notice that there is a standard loop of information that follows the following pattern.
+1. Get Name
+2. Get Units
+3. Get Event State
+4. Get Out-Of-Service
+5. Get Current Value
+
+
+Next, we needed to find the way to get those values. After looking around there are several methods I noticed.
 ```python
 import json
 import statistics as stats
