@@ -154,8 +154,17 @@ Looking around at the packets more, we notice that there is a standard loop of i
 4. Get Out-Of-Service
 5. Get Current Value
 
-
 Next, we needed to find the way to get those values. After looking around there are several methods I noticed.
+
+1. The "Get current value" response packets are of size 65 Bytes every time
+2. The get current value response was 8 packets after the name response every time.
+
+We went with method 2, filtering information by the values and names (adding 8 to get the value). see `filterInformation()`
+
+From there we did statistical analysis with `findFunky
+
+<details><summary>bacnet.py</summary>
+
 ```python
 import json
 import statistics as stats
@@ -226,6 +235,7 @@ def main():
 if __name__ == '__main__':
     main()
 ```
+</details>
 
 Running `find_funky()` on the filtered packets generated the following packet
 ```json
@@ -262,4 +272,39 @@ Running `find_funky()` on the filtered packets generated the following packet
     }
 }
 ```
-Looking at *means, there are two clear candidates for what looks not
+
+Looking at *means, there are two clear candidates for what looks off. 67890 and 12345, but the ranges gives it away, one sensor is obviously at a high value. Sensor 12345, upon direct inspection we find that the values of Sensor_12345 spike from their standard values. 
+
+```json
+{
+    "Sensor_12345": [
+      "1493.13427734375",
+      "1420.12353515625",
+      "1446.45324707031",
+      "1491.82995605469",
+      "1483.56103515625",
+      "1467.9677734375",
+      "1411.18664550781",
+      "1470.427734375",
+      "1478.26916503906",
+      "1477.85900878906",
+      "1431.7744140625",
+      "1452.45703125",
+      "1436.71887207031",
+      "99999.9921875",
+      "99999.9921875",
+      "99999.9921875",
+      "99999.9921875",
+      "1432.81823730469",
+      "1405.66235351562",
+      "1418.33959960938"
+    ]
+  }```
+
+  Thus we have our flag `flag{Sensor_12345}`
+
+## Interesting thing to note
+As there was only a finite input space for this question, there were many accounts created just to solve this challenge by trying the entire input space. It was interesting to look at the accounts and the timeline of who submitted what and when. I wonder what CSAW organizers found on the backend.
+
+## Conclusion
+Overall this was a fun challenge :) Look forward to Finals and next year's CSAW.
