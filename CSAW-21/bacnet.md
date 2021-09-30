@@ -161,8 +161,9 @@ Next, we needed to find the way to get those values. After looking around there 
 
 We went with method 2, filtering information by the values and names (adding 8 to get the value). see `filterInformation()`
 
-From there we did statistical analysis with `findFunky
+From there we did statistical analysis with `findFunky()`
 
+Here is the whole file
 <details><summary>bacnet.py</summary>
 
 ```python
